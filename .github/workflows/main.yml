@@ -1,26 +1,23 @@
-name: Deploy to IONOS Shared Hosting (PHP/HTML/JS)
+name: Deploy to IONOS Shared Hosting (SFTP)
 
 on:
   push:
-    branches: ["master"]   # change if your branch is different
+    branches: ["master"]
 
 jobs:
-  ftp-deploy:
+  sftp-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Deploy over SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./      # upload everything in your project root
-          server-dir: /cloudchillies.com/test-php/  # <-- Replace with your web directory
-          exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/README.md
+          server: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_path: "./"              # local project folder
+          remote_path: "/cloudchillies.com/test-php/"   # must end with /
+          delete_remote_files: false    # keeps existing files
