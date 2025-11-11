@@ -17,8 +17,8 @@ jobs:
 
       - name: Upload to IONOS via SFTP
         env:
-          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_HOST: ${{ secrets.SFTP_SERVER }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          lftp -e "set sftp:auto-confirm yes; mirror -R ./ /test-php/; quit" -u "$SFTP_USERNAME","$SFTP_PASSWORD" sftp://$SFTP_HOST
+          lftp -e "set sftp:auto-confirm yes; mirror -R ./ /test-php/; quit" -u "$SFTP_USERNAME","$SFTP_PASSWORD" sftp://$SFTP_SERVER
