@@ -21,4 +21,4 @@ jobs:
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          lftp -e "set sftp:auto-confirm yes; mirror -R ./ /cloudchillies.com/test-php/; quit" -u "$SFTP_USERNAME","$SFTP_PASSWORD" sftp://$SFTP_HOST
+          lftp -e "set sftp:auto-confirm yes; mirror -R ./ /test-php/; quit" -u "$SFTP_USERNAME","$SFTP_PASSWORD" sftp://$SFTP_HOST
