@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./      # upload everything in your project root
-          server-dir: /cloudchillies.com/test-php  # <-- Replace with your web directory
+          server-dir: /cloudchillies.com/test-php/  # <-- Replace with your web directory
           exclude: |
             **/.git*
             **/.github/**
