@@ -1,23 +1,24 @@
-name: Simple SFTP Deploy
+name: Auto Deploy to IONOS (SFTP)
 
 on:
   push:
-    branches: ["master"]   # change if needed
+    branches: ["master"]   # change to "main" if your repo uses main
 
 jobs:
-  sftp-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Upload Files via SFTP
-        uses: appleboy/sftp-action@v0.1.10
-        with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          source: "./*"
-          target: "/cloudchillies.com//test-php/"   # must end with a slash
-          strip_components: 0
+      - name: Install SFTP Client
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Upload to IONOS via SFTP
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          lftp -e "set sftp:auto-confirm yes; mirror -R ./ /cloudchillies.com/test-php/; quit" -u "$SFTP_USERNAME","$SFTP_PASSWORD" sftp://$SFTP_HOST
