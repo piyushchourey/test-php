@@ -1,0 +1,26 @@
+name: Deploy to IONOS Shared Hosting (PHP/HTML/JS)
+
+on:
+  push:
+    branches: ["master"]   # change if your branch is different
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./      # upload everything in your project root
+          server-dir: /cloudchillies.com/test-php  # <-- Replace with your web directory
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/README.md
