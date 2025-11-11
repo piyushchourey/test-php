@@ -1,23 +1,23 @@
-name: Deploy to IONOS Shared Hosting (SFTP)
+name: Simple SFTP Deploy
 
 on:
   push:
-    branches: ["master"]
+    branches: ["master"]   # change if needed
 
 jobs:
   sftp-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Deploy over SFTP
-        uses: wangyucode/sftp-deploy@v2.0
+      - name: Upload Files via SFTP
+        uses: appleboy/sftp-action@v0.1.10
         with:
-          server: ${{ secrets.SFTP_SERVER }}
+          host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          local_path: "./"              # local project folder
-          remote_path: "/cloudchillies.com/test-php/"   # must end with /
-          delete_remote_files: false    # keeps existing files
+          source: "./*"
+          target: "/cloudchillies.com//test-php/"   # must end with a slash
+          strip_components: 0
